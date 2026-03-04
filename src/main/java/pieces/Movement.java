@@ -1,5 +1,8 @@
 package pieces;
 
+import board.Board;
+import datastructures.Vector2D;
+
 public interface Movement {
 
 
@@ -11,6 +14,9 @@ public interface Movement {
        Knight moves all L shaped squares, ex. 2 up 1 right, 2 up 1 left, 2 right 1 down, 2 left 1 down
        Pawn moves x1 forward besides start, remember en passant, captures top right or top left
      */
+
+    boolean isValidMove(Vector2D loc, Board board);
+
 
 
 }

@@ -1,14 +1,19 @@
 package pieces;
 
+import board.Board;
 import datastructures.Vector2D;
 
-public class Pawn implements Movement{
+public class Pawn extends Piece implements Movement{
 
-    private boolean isWhite;
+    private String color;
     private Vector2D location;
 
-    public Pawn(boolean isWhite, Vector2D location) {
-        this.isWhite = isWhite;
-        this.location = location;
+    public Pawn(String color, Vector2D location) {
+        super(location, color);
+    }
+
+    @Override
+    public boolean isValidMove(Vector2D loc, Board board) {
+        return loc.getX() <= 8 && loc.getX() >= 0 && loc.getY() <= 8 && loc.getY() >= 0;
     }
 }
