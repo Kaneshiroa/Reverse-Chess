@@ -19,4 +19,12 @@ public abstract class Piece {
     public Vector2D getLoc() {
         return loc;
     }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public void setLoc(Vector2D loc) {
+        this.loc = loc;
+    }
 }

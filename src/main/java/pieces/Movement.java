@@ -3,6 +3,8 @@ package pieces;
 import board.Board;
 import datastructures.Vector2D;
 
+import java.util.List;
+
 public interface Movement {
 
 
@@ -16,6 +18,8 @@ public interface Movement {
      */
 
     boolean isValidMove(Vector2D loc, Board board);
+
+    List<Vector2D> possibleMoves(Board board);
 
 
 
