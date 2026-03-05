@@ -15,6 +15,16 @@ public class Bishop extends Piece implements Movement{
     }
 
     @Override
+    public Vector2D getLoc() {
+        return super.getLoc();
+    }
+
+    @Override
+    public String getColor() {
+        return color;
+    }
+
+    @Override
     public boolean isValidMove(Vector2D loc, Board board) {
         return loc.getX() <= 8 && loc.getX() >= 0 && loc.getY() <= 8 && loc.getY() >= 0;
     }
