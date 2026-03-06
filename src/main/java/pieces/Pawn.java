@@ -3,7 +3,9 @@ package pieces;
 import board.Board;
 import datastructures.Vector2D;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Pawn extends Piece implements Movement{
 
@@ -26,6 +28,30 @@ public class Pawn extends Piece implements Movement{
 
     @Override
     public List<Vector2D> possibleMoves(Board board) {
-        return List.of();
+        List<Vector2D> moves = new ArrayList<>();
+        int x = getLoc().getX();
+        int y = getLoc().getY();
+
+        if (Objects.equals(getColor(), "Black")) {
+            y -= 1;
+        }
+        if (Objects.equals(getColor(), "White")) {
+            y += 1;
+        }
+
+        Vector2D leftCapture = new Vector2D(x - 1, y);
+        Vector2D rightCapture = new Vector2D(x + 1, y);
+
+        Vector2D newPos = new Vector2D(x,y);
+        if (board.isInside(leftCapture) && board.isEnemy(leftCapture, getColor())) {
+            moves.add(leftCapture);
+        }
+        if (board.isInside(rightCapture) && board.isEnemy(rightCapture, getColor())) {
+            moves.add(rightCapture);
+        }
+        if (board.isInside(newPos) && (board.isEmpty(newPos)))  {
+            moves.add(newPos);
+        }
+        return moves;
     }
 }

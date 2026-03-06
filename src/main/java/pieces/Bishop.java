@@ -3,46 +3,53 @@ package pieces;
 import board.Board;
 import datastructures.Vector2D;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Bishop extends Piece implements Movement{
 
-    private String color;
-    private Vector2D location;
 
     public Bishop(String color, Vector2D location) {
         super(location, color);
     }
 
-    @Override
-    public Vector2D getLoc() {
-        return super.getLoc();
-    }
-
-    @Override
-    public String getColor() {
-        return color;
-    }
 
     @Override
     public boolean isValidMove(Vector2D loc, Board board) {
-        return loc.getX() <= 8 && loc.getX() >= 0 && loc.getY() <= 8 && loc.getY() >= 0;
+        return possibleMoves(board).contains(loc);
     }
 
-    public void setColor(String color) {
-        this.color = color;
-    }
-
-    //TODO: Get logic working for isValidMove to work with the conditional to set a location
-    public void setLocation(Vector2D location) {
-        if (location.getX() < 0 || location.getY() < 0 || location.getY() >= 8 || location.getX() >= 8) {
-            throw new IllegalArgumentException("Cannot place piece outside board");
-        }
-        this.location = location;
-    }
 
     @Override
     public List<Vector2D> possibleMoves(Board board) {
-        return List.of();
+        List<Vector2D> moves = new ArrayList<>();
+        int[][] directions = {
+                {1,1}, //Top Right
+                {1,-1}, //Bottom Right
+                {-1,1}, //Top Left
+                {-1,-1} //Bottom Left
+        };
+        for (int[] pos : directions) {
+            int x = getLoc().getX();
+            int y = getLoc().getY();
+
+            while (true) {
+                x += pos[0];
+                y += pos[1];
+                Vector2D newPos = new Vector2D(x,y);
+                if (!board.isInside(newPos)) {
+                    break;
+                }
+                if (board.isEmpty(newPos)) {
+                    moves.add(newPos);
+                } else if (board.isEnemy(newPos, getColor())) {
+                    moves.add(newPos);
+                    break;
+                } else {
+                    break;
+                }
+            }
+        }
+        return moves;
     }
 }
