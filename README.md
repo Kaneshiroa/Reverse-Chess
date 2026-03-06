@@ -14,7 +14,17 @@
 ---
 
 ## Overview
-**Reverse-Chess** is a custom software project built to explore the complexities of game state management and Object-Oriented Design. Rather than just a standard simulator, this project focuses on a "Reverse" rule set, requiring a flexible and robust logic engine.
+Reverse-Chess is a custom software project built to explore the complexities of game state management and Object-Oriented Design. This project implements a "Losing Chess" variant, requiring a flexible and robust logic engine to handle non-traditional win conditions and movement constraints.
+
+## Rules of Play
+This project operates on a variant where the objective is to be the first player to have no legal moves remaining.
+
+### Core Mechanics
+* **Forced Capture:** If a player is able to capture an opponent's piece, they are required to do so. If multiple captures are possible, the player may choose which one to execute.
+* **Winning Conditions:** A player wins by being the first to:
+    1.  Be placed in a checkmate position.
+    2.  Have all pieces removed from the board (excluding the King, depending on configuration).
+    3.  Reach a stalemate where no legal moves are available.
 
 > **Note:** This project is currently in **active development**. We utilize professional software engineering workflows to ensure high-quality code and maintainability.
 
