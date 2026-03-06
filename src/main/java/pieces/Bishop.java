@@ -1,14 +1,55 @@
 package pieces;
 
+import board.Board;
 import datastructures.Vector2D;
 
-public class Bishop implements Movement{
+import java.util.ArrayList;
+import java.util.List;
 
-    private boolean isWhite;
-    private Vector2D location;
+public class Bishop extends Piece implements Movement{
 
-    public Bishop(boolean isWhite, Vector2D location) {
-        this.isWhite = isWhite;
-        this.location = location;
+
+    public Bishop(String color, Vector2D location) {
+        super(location, color);
+    }
+
+
+    @Override
+    public boolean isValidMove(Vector2D loc, Board board) {
+        return possibleMoves(board).contains(loc);
+    }
+
+
+    @Override
+    public List<Vector2D> possibleMoves(Board board) {
+        List<Vector2D> moves = new ArrayList<>();
+        int[][] directions = {
+                {1,1}, //Top Right
+                {1,-1}, //Bottom Right
+                {-1,1}, //Top Left
+                {-1,-1} //Bottom Left
+        };
+        for (int[] pos : directions) {
+            int x = getLoc().getX();
+            int y = getLoc().getY();
+
+            while (true) {
+                x += pos[0];
+                y += pos[1];
+                Vector2D newPos = new Vector2D(x,y);
+                if (!board.isInside(newPos)) {
+                    break;
+                }
+                if (board.isEmpty(newPos)) {
+                    moves.add(newPos);
+                } else if (board.isEnemy(newPos, getColor())) {
+                    moves.add(newPos);
+                    break;
+                } else {
+                    break;
+                }
+            }
+        }
+        return moves;
     }
 }
