@@ -40,4 +40,5 @@ public class King extends Piece implements Movement{
         }
         return moves;
     }
+
 }

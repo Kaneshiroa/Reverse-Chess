@@ -37,6 +37,18 @@ public class Board {
         piece.setLoc(loc);
     }
 
+    public void Move(Vector2D start, Vector2D end) {
+        Piece piece = getPiece(start);
+        if (piece != null) {
+            //Prevents castling after movement between king and rook, and moving two spaces as a pawn if moved once
+            piece.setHasMoved(true);
+            //Move the piece to the new square
+            setPiece(end,piece);
+            //Then reset the tile they just moved from
+            setPiece(start,null);
+        }
+    }
+
     //Check if a piece is inside specified tile
     public boolean isInside(Vector2D loc) {
         return loc.getX() >= 0 && loc.getX() < 8 && loc.getY() >= 0 && loc.getY() < 8;

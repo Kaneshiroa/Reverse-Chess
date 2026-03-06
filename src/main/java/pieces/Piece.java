@@ -6,6 +6,7 @@ public abstract class Piece {
 
     protected Vector2D loc;
     protected String color;
+    private boolean hasMoved = false;
 
     public Piece(Vector2D loc, String color) {
         this.loc = loc;
@@ -26,5 +27,13 @@ public abstract class Piece {
 
     public void setLoc(Vector2D loc) {
         this.loc = loc;
+    }
+
+    public boolean getHasMoved() {
+        return hasMoved;
+    }
+
+    public void setHasMoved(boolean hasMoved) {
+        this.hasMoved = hasMoved;
     }
 }
