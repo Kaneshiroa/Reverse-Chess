@@ -34,9 +34,21 @@ public class Pawn extends Piece implements Movement{
 
         if (Objects.equals(getColor(), "Black")) {
             y -= 1;
+            if (!this.getHasMoved()){
+                Vector2D blkDoubleMove = new Vector2D(x, y-1);
+                if (board.isEmpty(blkDoubleMove)){
+                    moves.add(blkDoubleMove);
+                }
+            }
         }
         if (Objects.equals(getColor(), "White")) {
             y += 1;
+            if (!this.getHasMoved()){
+                Vector2D whtDoubleMove = new Vector2D(x, y+1);
+                if (board.isEmpty(whtDoubleMove)){
+                    moves.add(whtDoubleMove);
+                }
+            }
         }
 
         Vector2D leftCapture = new Vector2D(x - 1, y);
