@@ -38,6 +38,21 @@ public class King extends Piece implements Movement{
                 moves.add(newPos);
             }
         }
+        //checking for castling moves
+        if (this.getHasMoved()){
+            Vector2D rightSideCastle = new Vector2D(getLoc().getX() + 2, getLoc().getY());
+            Vector2D leftSideCastle = new Vector2D(getLoc().getX() - 2, getLoc().getY());
+            if (board.isEmpty(new Vector2D(getLoc().getX() + 1, getLoc().getY()))) {
+                if(board.isEmpty(rightSideCastle)){
+                    moves.add(rightSideCastle);
+                }
+            }
+            if (board.isEmpty(new Vector2D(getLoc().getX() - 1, getLoc().getY()))) {
+                if(board.isEmpty(leftSideCastle)){
+                    moves.add(leftSideCastle);
+                }
+            }
+        }
         return moves;
     }
 
