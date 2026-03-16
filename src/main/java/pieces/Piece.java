@@ -36,4 +36,8 @@ public abstract class Piece {
     public void setHasMoved(boolean hasMoved) {
         this.hasMoved = hasMoved;
     }
+
+    public String getType() {
+        return this.getClass().getSimpleName(); // Returns "King", "Pawn", etc.
+    }
 }

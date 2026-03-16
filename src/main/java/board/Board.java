@@ -20,6 +20,7 @@ public class Board {
 
     public Board() {
         board = new Piece[8][8];
+        setupStandardBoard();
     }
 
     public Piece getPiece(Vector2D loc) {
@@ -161,5 +162,37 @@ public class Board {
             }
         }
         return false;
+    }
+
+    public void setupStandardBoard() {
+        // 1. White Back Rank (Row 0)
+        setPiece(new Vector2D(0, 0), new Rook("White", new Vector2D(0, 0)));
+        setPiece(new Vector2D(1, 0), new Knight("White", new Vector2D(1, 0)));
+        setPiece(new Vector2D(2, 0), new Bishop("White", new Vector2D(2, 0)));
+        setPiece(new Vector2D(3, 0), new Queen("White", new Vector2D(3, 0)));
+        setPiece(new Vector2D(4, 0), new King("White", new Vector2D(4, 0)));
+        setPiece(new Vector2D(5, 0), new Bishop("White", new Vector2D(5, 0)));
+        setPiece(new Vector2D(6, 0), new Knight("White", new Vector2D(6, 0)));
+        setPiece(new Vector2D(7, 0), new Rook("White", new Vector2D(7, 0)));
+
+        // 2. White Pawns (Row 1)
+        for (int i = 0; i < 8; i++) {
+            setPiece(new Vector2D(i, 1), new Pawn("White", new Vector2D(i, 1)));
+        }
+
+        // 3. Black Back Rank (Row 7)
+        setPiece(new Vector2D(0, 7), new Rook("Black", new Vector2D(0, 7)));
+        setPiece(new Vector2D(1, 7), new Knight("Black", new Vector2D(1, 7)));
+        setPiece(new Vector2D(2, 7), new Bishop("Black", new Vector2D(2, 7)));
+        setPiece(new Vector2D(3, 7), new Queen("Black", new Vector2D(3, 7)));
+        setPiece(new Vector2D(4, 7), new King("Black", new Vector2D(4, 7)));
+        setPiece(new Vector2D(5, 7), new Bishop("Black", new Vector2D(5, 7)));
+        setPiece(new Vector2D(6, 7), new Knight("Black", new Vector2D(6, 7)));
+        setPiece(new Vector2D(7, 7), new Rook("Black", new Vector2D(7, 7)));
+
+        // 4. Black Pawns (Row 6)
+        for (int i = 0; i < 8; i++) {
+            setPiece(new Vector2D(i, 6), new Pawn("Black", new Vector2D(i, 6)));
+        }
     }
 }
