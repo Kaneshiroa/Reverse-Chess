@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 
 import board.Board;
 import datastructures.Vector2D;
+import pieces.King;
 import pieces.Piece;
 
 public class GameWindow extends JFrame {
@@ -59,23 +60,68 @@ public class GameWindow extends JFrame {
         Piece clickedPiece = gameBoard.getPiece(clickedPos);
 
         if (selectedSquare == null) {
-            // --- FIRST CLICK: Try to select a piece ---
+            //FIRST CLICK: Selection
             if (clickedPiece != null) {
-                selectedSquare = clickedPos;
-                // Optional: Highlight the square so you know it's selected
-                squares[x][y].setBackground(Color.YELLOW);
-                System.out.println("Selected " + clickedPiece.getType() + " at " + x + "," + y);
+                if (clickedPiece.getColor().equalsIgnoreCase(currentTurn)) {
+                    selectedSquare = clickedPos;
+                    highlightSquare(x, y, Color.YELLOW);
+                } else {
+                    System.out.println("It is " + currentTurn + "'s turn!");
+                }
             }
         } else {
-            // --- SECOND CLICK: Move the piece ---
-            // Move from the old square to the new one
-            gameBoard.Move(selectedSquare, clickedPos);
+            //SECOND CLICK: Movement
+            //Check for double-click to deselect
+            if (selectedSquare.getX() == x && selectedSquare.getY() == y) {
+                selectedSquare = null;
+                resetBoardColors();
+                return;
+            }
 
-            // Reset everything for the next turn
+            Piece activePiece = gameBoard.getPiece(selectedSquare);
+
+            //Validate move before moving
+            if (activePiece != null && isMoveLegal(activePiece, clickedPos)) {
+
+                //Handle special moves vs standard moves
+                if (activePiece instanceof King && Math.abs(clickedPos.getX() - selectedSquare.getX()) == 2) {
+                    gameBoard.executeCastle(selectedSquare, clickedPos);
+                } else {
+                    gameBoard.Move(selectedSquare, clickedPos);
+                }
+
+                // 4. Switch Turns (Standard If-Else)
+                if (currentTurn.equals("White")) {
+                    currentTurn = "Black";
+                } else {
+                    currentTurn = "White";
+                }
+
+                System.out.println("Successful move! Turn: " + currentTurn);
+            } else {
+                System.out.println("Invalid Move!");
+            }
+
+            //Cleanup
             selectedSquare = null;
-            resetBoardColors(); // You'll need this to remove the yellow highlight
-            refreshUI();        // Redraw the icons in their new spots
+            resetBoardColors();
+            refreshUI();
         }
+    }
+
+    private void highlightSquare(int x, int y, Color color) {
+        squares[x][y].setBackground(color);
+    }
+
+    private boolean isMoveLegal(Piece p, Vector2D destination) {
+        java.util.List<Vector2D> legalMoves = p.possibleMoves(gameBoard);
+
+        for (Vector2D move : legalMoves) {
+            if (move.getX() == destination.getX() && move.getY() == destination.getY()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void resetBoardColors() {

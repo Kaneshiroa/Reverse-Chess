@@ -7,17 +7,6 @@ public class Board {
 
     private Piece[][] board;
 
-    /*
-    [R][K][B][Q][K][B][K][R]
-    [P][P][P][P][P][P][P][P]
-    [x][o][x][o][x][o][x][o]
-    [o][x][o][x][o][x][o][x]
-    [x][o][x][o][x][o][x][o]
-    [o][x][o][x][o][x][o][x]
-    [P][P][P][P][P][P][P][P]
-    [R][K][B][Q][K][B][K][R]
-     */
-
     public Board() {
         board = new Piece[8][8];
         setupStandardBoard();
@@ -193,6 +182,18 @@ public class Board {
         // 4. Black Pawns (Row 6)
         for (int i = 0; i < 8; i++) {
             setPiece(new Vector2D(i, 6), new Pawn("Black", new Vector2D(i, 6)));
+        }
+    }
+
+    public void executeCastle(Vector2D kingStart, Vector2D kingEnd) {
+        //Move the King normally
+        Move(kingStart, kingEnd);
+
+        //Move the Rook manually based on which side was clicked
+        if (kingEnd.getX() == 6) { //Kingside (to the right)
+            Move(new Vector2D(7, kingStart.getY()), new Vector2D(5, kingStart.getY()));
+        } else if (kingEnd.getX() == 2) { //Queenside (to the left)
+            Move(new Vector2D(0, kingStart.getY()), new Vector2D(3, kingStart.getY()));
         }
     }
 }
