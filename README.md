@@ -53,9 +53,9 @@ The development of **Reverse-Chess** is focused on creating a high-fidelity, two
 - [x] **Movement Registry:** Tracking piece history (`hasMoved`) for specialized move validation.
 
 ### **Phase 2: Visuals & Asset Management (In Progress)**
-- [ ] **Sprite Integration:** Mapping high-resolution SVG/PNG chess piece assets to specific `Piece` subclasses.
+- [x] **Sprite Integration:** Mapping high-resolution SVG/PNG chess piece assets to specific `Piece` subclasses.
 - [ ] **Dynamic Board Rendering:** Implementing custom color themes (Classic Wood, Midnight, and High-Contrast).
-- [ ] **Asset Pipeline:** Efficient loading of images into the **Swing GUI** using `ImageIO` buffers for smooth rendering.
+- [x] **Asset Pipeline:** Efficient loading of images into the **Swing GUI** using `ImageIO` buffers for smooth rendering.
 
 ### **Phase 3: Advanced Game Logic & UX**
 - [ ] **Promotion Engine:**  *Implementing transformation UI for Pawns reaching the 8th rank.*
