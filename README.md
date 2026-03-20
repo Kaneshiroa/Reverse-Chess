@@ -58,7 +58,7 @@ The development of **Reverse-Chess** is focused on creating a high-fidelity, two
 - [x] **Asset Pipeline:** Efficient loading of images into the **Swing GUI** using `ImageIO` buffers for smooth rendering.
 
 ### **Phase 3: Advanced Game Logic & UX**
-- [ ] **Promotion Engine:**  *Implementing transformation UI for Pawns reaching the 8th rank.*
+- [x] **Promotion Engine:**  *Implementing transformation UI for Pawns reaching the 8th rank.*
 - [ ] **Perspective Rotation:** Logic for rotating the board view 180° automatically based on the current player's turn.
 - [ ] **Validation Engine:** Implementing Check/Checkmate detection and "En Passant" validation.
 
