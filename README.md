@@ -81,10 +81,10 @@ The development of **Reverse-Chess** is focused on creating a high-fidelity, two
 ### Running the App
 ```bash
 # Clone the repository
-git clone [https://github.com/Kaneshiroa/Reverse-Chess.git](https://github.com/Kaneshiroa/Reverse-Chess.git)
+git clone https://github.com/Kaneshiroa/Reverse-Chess.git
 
 # Build the project
 mvn clean install
 
 # Launch the GUI
-mvn exec:java -Dexec.mainClass="com.chess.Main"
+mvn exec:java -Dexec.mainClass="StartGame.Main"
