@@ -79,18 +79,26 @@ public class GameWindow extends JFrame {
             }
 
             Piece activePiece = gameBoard.getPiece(selectedSquare);
-
             //Validate move before moving
             if (activePiece != null && isMoveLegal(activePiece, clickedPos)) {
 
-                //Handle special moves vs standard moves
+                // 1. Check for Castling (Keep your existing logic)
                 if (activePiece instanceof King && Math.abs(clickedPos.getX() - selectedSquare.getX()) == 2) {
                     gameBoard.executeCastle(selectedSquare, clickedPos);
                 } else {
+                    //Standard Move
                     gameBoard.Move(selectedSquare, clickedPos);
-                }
 
-                // 4. Switch Turns (Standard If-Else)
+                    //PROMOTION CHECK: Check if the piece we just moved was a Pawn
+                    //and if it landed on a promotion rank
+                    if (activePiece instanceof pieces.Pawn) {
+                        pieces.Pawn p = (pieces.Pawn) activePiece;
+                        if (p.isPromotionMove(clickedPos)) {
+                            triggerPromotionPopup(clickedPos, p.getColor());
+                        }
+                    }
+                }
+                //Switch Turns
                 if (currentTurn.equals("White")) {
                     currentTurn = "Black";
                 } else {
@@ -101,7 +109,6 @@ public class GameWindow extends JFrame {
             } else {
                 System.out.println("Invalid Move!");
             }
-
             //Cleanup
             selectedSquare = null;
             resetBoardColors();
@@ -109,19 +116,66 @@ public class GameWindow extends JFrame {
         }
     }
 
+    private void triggerPromotionPopup(Vector2D pos, String color) {
+        // 1. Prepare the Icons from your ImageLoader
+        Icon qIcon = iconBank.getIcon(color, "Queen");
+        Icon rIcon = iconBank.getIcon(color, "Rook");
+        Icon nIcon = iconBank.getIcon(color, "Knight");
+        Icon bIcon = iconBank.getIcon(color, "Bishop");
+
+        // 2. Put them in an array (the order here determines the button order)
+        Object[] options = {qIcon, rIcon, nIcon, bIcon};
+
+        // 3. Show the dialog with icons instead of text
+        int selection = JOptionPane.showOptionDialog(
+                this,
+                "Select your promotion piece:",
+                "Pawn Promotion",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.PLAIN_MESSAGE, // Plain message removes the default '?' icon
+                null,
+                options,
+                options[0]
+        );
+
+        //Map the selection index back to the type string
+        String choice;
+        if (selection == 1) {
+            choice = "Rook";
+        } else if (selection == 2) {
+            choice = "Knight";
+        } else if (selection == 3) {
+            choice = "Bishop";
+        } else {
+            choice = "Queen"; //Default to Queen if index 0 or closed
+        }
+
+        executePromotion(pos, choice, color);
+    }
+
+    private void executePromotion(Vector2D loc, String type, String color) {
+        Piece newPiece;
+
+        if (type.equals("Rook")) {
+            newPiece = new pieces.Rook(color, loc);
+        } else if (type.equals("Knight")) {
+            newPiece = new pieces.Knight(color, loc);
+        } else if (type.equals("Bishop")) {
+            newPiece = new pieces.Bishop(color, loc);
+        } else {
+            newPiece = new pieces.Queen(color, loc);
+        }
+
+        //Update the gameBoard directly
+        gameBoard.setPiece(loc, newPiece);
+    }
+
     private void highlightSquare(int x, int y, Color color) {
         squares[x][y].setBackground(color);
     }
 
     private boolean isMoveLegal(Piece p, Vector2D destination) {
-        java.util.List<Vector2D> legalMoves = p.possibleMoves(gameBoard);
-
-        for (Vector2D move : legalMoves) {
-            if (move.getX() == destination.getX() && move.getY() == destination.getY()) {
-                return true;
-            }
-        }
-        return false;
+        return p.possibleMoves(gameBoard).contains(destination);
     }
 
     private void resetBoardColors() {

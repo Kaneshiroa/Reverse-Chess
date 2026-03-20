@@ -39,11 +39,11 @@ public class Pawn extends Piece implements Movement{
             direction = -1;
         }
 
-        // One Square forward
+        //One Square forward
         Vector2D oneStep = new Vector2D(x, y + direction);
         if (board.isInside(oneStep) && board.isEmpty(oneStep)) {
             moves.add(oneStep);
-            // Two squares forward
+            //Two squares forward
             if (!this.getHasMoved()) {
                 Vector2D twoStep = new Vector2D(x, y + (2 * direction));
                 if (board.isInside(twoStep) && board.isEmpty(twoStep)) {
@@ -52,7 +52,7 @@ public class Pawn extends Piece implements Movement{
             }
         }
 
-        // Captures
+        //Captures
         int[] captureCols = {x - 1, x + 1};
         for (int nextX : captureCols) {
             Vector2D diagPos = new Vector2D(nextX, y + direction);
@@ -62,5 +62,20 @@ public class Pawn extends Piece implements Movement{
         }
 
         return moves;
+    }
+
+    public boolean isPromotionMove(Vector2D target) {
+        int promoRank;
+        if (getColor().equals("White")) {
+            promoRank = 7; //7 is the top
+        } else {
+            promoRank = 0; //Bottom rank for Black
+        }
+
+        if (target.getY() == promoRank) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
