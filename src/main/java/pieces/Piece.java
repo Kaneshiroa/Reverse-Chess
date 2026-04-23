@@ -1,6 +1,9 @@
 package pieces;
 
+import board.Board;
 import datastructures.Vector2D;
+
+import java.util.List;
 
 public abstract class Piece {
 
@@ -35,5 +38,13 @@ public abstract class Piece {
 
     public void setHasMoved(boolean hasMoved) {
         this.hasMoved = hasMoved;
+    }
+
+    public String getType() {
+        return this.getClass().getSimpleName(); // Returns "King", "Pawn", etc.
+    }
+
+    public List<Vector2D> possibleMoves(Board board) {
+        return null;
     }
 }

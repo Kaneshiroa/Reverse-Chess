@@ -39,17 +39,37 @@ public class King extends Piece implements Movement{
             }
         }
         //checking for castling moves
-        if (this.getHasMoved()){
-            Vector2D rightSideCastle = new Vector2D(getLoc().getX() + 2, getLoc().getY());
-            Vector2D leftSideCastle = new Vector2D(getLoc().getX() - 2, getLoc().getY());
-            if (board.isEmpty(new Vector2D(getLoc().getX() + 1, getLoc().getY()))) {
-                if(board.isEmpty(rightSideCastle)){
-                    moves.add(rightSideCastle);
+        if (!this.getHasMoved()) {
+            int y = getLoc().getY();
+
+            //Right Castle
+            Vector2D r1 = new Vector2D(5, y); // Pass-through
+            Vector2D r2 = new Vector2D(6, y); // Landing
+            Piece rightRook = board.getPiece(new Vector2D(7, y));
+
+            if (board.isEmpty(r1) && board.isEmpty(r2) && rightRook instanceof Rook) {
+                if (!rightRook.getHasMoved()) {
+                    //Check King doesn't move through check
+                    if (!board.isSquareAttacked(getLoc(), getColor()) &&
+                            !board.isSquareAttacked(r1, getColor()) &&
+                            !board.isSquareAttacked(r2, getColor())) {
+                        moves.add(r2);
+                    }
                 }
             }
-            if (board.isEmpty(new Vector2D(getLoc().getX() - 1, getLoc().getY()))) {
-                if(board.isEmpty(leftSideCastle)){
-                    moves.add(leftSideCastle);
+            //Left Castle
+            Vector2D l1 = new Vector2D(3, y); // Pass-through
+            Vector2D l2 = new Vector2D(2, y); // Landing
+            Vector2D l3 = new Vector2D(1, y); // B-file (must be empty)
+            Piece leftRook = board.getPiece(new Vector2D(0, y));
+
+            if (board.isEmpty(l1) && board.isEmpty(l2) && board.isEmpty(l3) && leftRook instanceof Rook) {
+                if (!leftRook.getHasMoved()) {
+                    if (!board.isSquareAttacked(getLoc(), getColor()) &&
+                            !board.isSquareAttacked(l1, getColor()) &&
+                            !board.isSquareAttacked(l2, getColor())) {
+                        moves.add(l2);
+                    }
                 }
             }
         }

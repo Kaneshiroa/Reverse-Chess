@@ -32,38 +32,50 @@ public class Pawn extends Piece implements Movement{
         int x = getLoc().getX();
         int y = getLoc().getY();
 
-        if (Objects.equals(getColor(), "Black")) {
-            y -= 1;
-            if (!this.getHasMoved()){
-                Vector2D blkDoubleMove = new Vector2D(x, y-2);
-                if (board.isEmpty(blkDoubleMove)){
-                    moves.add(blkDoubleMove);
-                }
-            }
+        int direction;
+        if (getColor().equals("White")) {
+            direction = 1;
+        } else {
+            direction = -1;
         }
-        if (Objects.equals(getColor(), "White")) {
-            y += 1;
-            if (!this.getHasMoved()){
-                Vector2D whtDoubleMove = new Vector2D(x, y+2);
-                if (board.isEmpty(whtDoubleMove)){
-                    moves.add(whtDoubleMove);
+
+        //One Square forward
+        Vector2D oneStep = new Vector2D(x, y + direction);
+        if (board.isInside(oneStep) && board.isEmpty(oneStep)) {
+            moves.add(oneStep);
+            //Two squares forward
+            if (!this.getHasMoved()) {
+                Vector2D twoStep = new Vector2D(x, y + (2 * direction));
+                if (board.isInside(twoStep) && board.isEmpty(twoStep)) {
+                    moves.add(twoStep);
                 }
             }
         }
 
-        Vector2D leftCapture = new Vector2D(x - 1, y);
-        Vector2D rightCapture = new Vector2D(x + 1, y);
+        //Captures
+        int[] captureCols = {x - 1, x + 1};
+        for (int nextX : captureCols) {
+            Vector2D diagPos = new Vector2D(nextX, y + direction);
+            if (board.isInside(diagPos) && board.isEnemy(diagPos, getColor())) {
+                moves.add(diagPos);
+            }
+        }
 
-        Vector2D newPos = new Vector2D(x,y);
-        if (board.isInside(leftCapture) && board.isEnemy(leftCapture, getColor())) {
-            moves.add(leftCapture);
-        }
-        if (board.isInside(rightCapture) && board.isEnemy(rightCapture, getColor())) {
-            moves.add(rightCapture);
-        }
-        if (board.isInside(newPos) && (board.isEmpty(newPos)))  {
-            moves.add(newPos);
-        }
         return moves;
+    }
+
+    public boolean isPromotionMove(Vector2D target) {
+        int promoRank;
+        if (getColor().equals("White")) {
+            promoRank = 7; //7 is the top
+        } else {
+            promoRank = 0; //Bottom rank for Black
+        }
+
+        if (target.getY() == promoRank) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
