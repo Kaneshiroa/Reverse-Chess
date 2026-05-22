@@ -60,7 +60,7 @@ The development of **Reverse-Chess** is focused on creating a high-fidelity, two
 ### **Phase 3: Advanced Game Logic & UX**
 - [x] **Promotion Engine:**  *Implementing transformation UI for Pawns reaching the 8th rank.*
 - [ ] **Perspective Rotation:** Logic for rotating the board view 180° automatically based on the current player's turn.
-- [ ] **Validation Engine:** Implementing Check/Checkmate detection and "En Passant" validation.
+- [x] **Validation Engine:** Implementing Check/Checkmate detection and "En Passant" validation.
 
 ### **Phase 4: Game Polish**
 - [ ] **Move History:** A visual log of PGN (Portable Game Notation) moves on the side of the GUI.
