@@ -29,6 +29,19 @@ public class Board {
     }
 
     public void Move(Vector2D start, Vector2D end) {
+        Piece movingPiece = getPiece(start);
+
+        // Clear the target at the start of every single move execution
+        this.enPassantTargetSquare = null;
+
+        if (movingPiece instanceof Pawn) {
+            // Check if it was a 2-square jump
+            if (Math.abs(end.getY() - start.getY()) == 2) {
+                // Calculate the square right in the middle of the jump
+                int middleY = (start.getY() + end.getY()) / 2;
+                this.enPassantTargetSquare = new Vector2D(start.getX(), middleY);
+            }
+        }
         Piece piece = getPiece(start);
         if (piece != null) {
             //Prevents castling after movement between king and rook, and moving two spaces as a pawn if moved once
@@ -196,4 +209,9 @@ public class Board {
             Move(new Vector2D(0, kingStart.getY()), new Vector2D(3, kingStart.getY()));
         }
     }
+
+    private Vector2D enPassantTargetSquare = null;
+
+    public Vector2D getEnPassantTargetSquare() { return enPassantTargetSquare; }
+    public void setEnPassantTargetSquare(Vector2D square) { this.enPassantTargetSquare = square; }
 }

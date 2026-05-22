@@ -39,6 +39,17 @@ public class Pawn extends Piece implements Movement{
             direction = -1;
         }
 
+        //En-passant
+        Vector2D epTarget = board.getEnPassantTargetSquare();
+        if (epTarget != null) {
+            // En Passant is only possible if the target square is diagonally adjacent in front of us
+            if (epTarget.getY() == y + direction) {
+                if (Math.abs(epTarget.getX() - x) == 1) {
+                    moves.add(epTarget); // The skipped-over square is added as a valid destination!
+                }
+            }
+        }
+
         //One Square forward
         Vector2D oneStep = new Vector2D(x, y + direction);
         if (board.isInside(oneStep) && board.isEmpty(oneStep)) {

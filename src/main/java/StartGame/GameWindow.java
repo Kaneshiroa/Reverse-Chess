@@ -83,23 +83,36 @@ public class GameWindow extends JFrame {
             //Validate move before moving
             if (activePiece != null && isMoveLegal(activePiece, clickedPos)) {
 
-                // --- NEW: PREVENT MOVING INTO CHECK ---
+                // PREVENT MOVING INTO CHECK
                 if (putsOwnKingInCheck(activePiece, selectedSquare, clickedPos)) {
                     System.out.println("Invalid Move: You cannot move into check!");
                     selectedSquare = null;
                     resetBoardColors();
                     return; // Stop the code here so the move doesn't happen
                 }
-                // --------------------------------------
+                //En-passant
+                if (activePiece instanceof pieces.Pawn) {
+                    Vector2D epTarget = gameBoard.getEnPassantTargetSquare();
 
-                // 1. Check for Castling (Keep your existing logic)
+                    // If an En Passant target exists, and the user clicked it, and the square is empty...
+                    if (epTarget != null && clickedPos.getX() == epTarget.getX() && clickedPos.getY() == epTarget.getY()
+                            && gameBoard.getPiece(clickedPos) == null) {
+
+                        // The victim pawn is on our same row (selectedSquare.getY()) but the clicked column (x)
+                        Vector2D victimPos = new Vector2D(x, selectedSquare.getY());
+                        gameBoard.setPiece(victimPos, null); // Clear the captured pawn from the board!
+                        System.out.println("En Passant Executed!");
+                    }
+                }
+
+                // Check for Castling
                 if (activePiece instanceof King && Math.abs(clickedPos.getX() - selectedSquare.getX()) == 2) {
                     gameBoard.executeCastle(selectedSquare, clickedPos);
                 } else {
                     //Standard Move
                     gameBoard.Move(selectedSquare, clickedPos);
 
-                    //PROMOTION CHECK...
+                    //PROMOTION CHECK
                     if (activePiece instanceof pieces.Pawn) {
                         pieces.Pawn p = (pieces.Pawn) activePiece;
                         if (p.isPromotionMove(clickedPos)) {
@@ -117,9 +130,8 @@ public class GameWindow extends JFrame {
 
                 System.out.println("Successful move! Turn: " + currentTurn);
 
-                // --- NEW: CHECK FOR GAME OVER ---
+                // CHECK FOR GAME OVER
                 checkGameEndConditions();
-                // --------------------------------
 
             } else {
                 System.out.println("Invalid Move!");
